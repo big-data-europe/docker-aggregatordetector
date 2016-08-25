@@ -1,0 +1,7 @@
+version: '2'
+services:
+  aggregatordetector:
+    image: gioargyr/aggregatordetector:1.0.0
+    hostname: aggregatordetector
+    ports:
+      - "9999:8080"
