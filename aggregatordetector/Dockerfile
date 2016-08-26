@@ -1,12 +1,12 @@
-#####################################
-# Docker for BoostedImageAggregator #
-# BigDataEurope                     #
-#                                   #
-# spark 1.6.2			    #
-# maven 3.0.5			    #
-# git 1.9.1			    #
-# tomcat 8.0.23                     #
-#####################################
+#################################
+# Docker for AggregatorDetector #
+# BigDataEurope                 #
+#                               #
+# spark 1.6.2		        #
+# maven 3.0.5		        #
+# git 1.9.1			#
+# tomcat 8.0.23                 #
+#################################
 
 
 FROM java:8
@@ -22,6 +22,7 @@ RUN apt-get update \
       && tar -xvzf spark-1.6.2-bin-hadoop2.6.tgz \
       && mv spark-1.6.2-bin-hadoop2.6 spark \
       && rm spark-1.6.2-bin-hadoop2.6.tgz \
+      && apt-get install -y libgfortran3
       && cd /css \
       && jar uf /spark/lib/spark-assembly-1.6.2-hadoop2.6.0.jar org/apache/spark/ui/static/timeline-view.css \
       && cd /
