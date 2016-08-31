@@ -43,7 +43,7 @@ RUN apt-get update && \
 # DOWNLOAD AND BUILD THE SPARK-APP
 RUN git clone https://github.com/big-data-europe/pilot-sc7-change-detector.git && \
 	cd pilot-sc7-change-detector && \
-	git checkout a822d53d57c36484534dd283ea52c076e37ae6e4 && \
+	git checkout b0e80550b42b7d8f5ed4e9a3d3e2443efd5b7688 && \
 	mvn package
 
 RUN mkdir /spark-app && \
