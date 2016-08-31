@@ -1,0 +1,87 @@
+version: '2'
+services:
+
+  sextant:
+    image: bde2020/sextant
+    container_name: sextant
+    environment:
+      - "constraint:node==slave1"
+    ports:
+      - "8190:8080"
+    depends_on:
+      - aggregatordetector
+    networks:
+      - default
+
+  aggregatordetector:
+    image: gioargyr/aggregatordetector:2.2.2
+    container_name: aggregatordetector
+    mem_limit: 16g
+    ports:
+      - "12345:8080"
+    volumes:
+      - /srv/aggregatordetector/images:/images
+    depends_on:
+      - geotriples
+    networks:
+      - default
+
+  geotriples:
+    image: gioargyr/geotriples-ws:2.4.0
+    container_name: geotriples
+    environment:
+      - "affinity:container==strabon"
+    volumes:
+      - /home/iitadmin/SC7Pilot/geostrabon:/resources
+    ports:
+      - "8192:8080"
+    depends_on:
+      - strabon
+    networks:
+      - default
+
+  strabon:
+    image: bde2020/strabon
+    container_name: strabon
+    mem_limit: 3g
+    environment:
+      - "constraint:node!=/slave[34]/"
+    volumes:
+      - /home/iitadmin/SC7Pilot/geostrabon:/resources
+    ports:
+      - "8193:8080"
+    depends_on:
+      - postgis
+    networks:
+      - default
+
+  postgis:
+    image: bde2020/postgis
+    container_name: postgis
+    mem_limit: 3g
+#    environment:
+#      - "constraint:node==slave1"
+    volumes:
+      - /srv/postgis:/var/lib/postgresql/9.4/main
+    ports:
+      - "5432:5432"
+    networks:
+      - default
+
+  semagrow:
+    image: semagrow/semagrow-cassandra
+    container_name: semagrow_bde
+    mem_limit: 3g
+    ports:
+      - "8291:8080"
+    volumes:
+      - /home/iitadmin/SC7Pilot/config/semagrow:/etc/default/semagrow
+    depends_on:
+      - strabon
+    networks:
+      - default
+
+networks:
+  default:
+    external:
+      name: bde_net
