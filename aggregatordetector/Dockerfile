@@ -43,7 +43,7 @@ RUN apt-get update && \
 # DOWNLOAD AND BUILD THE SPARK-APP
 RUN git clone https://github.com/big-data-europe/pilot-sc7-change-detector.git && \
 	cd pilot-sc7-change-detector && \
-	git checkout c18c35d5a803c6f4bc923e151fecffcea81e5150 && \
+	git checkout a822d53d57c36484534dd283ea52c076e37ae6e4 && \
 	mvn package
 
 RUN mkdir /spark-app && \
@@ -60,7 +60,7 @@ RUN wget -q https://archive.apache.org/dist/tomcat/tomcat-${TOMCAT_MAJOR_VERSION
 # DOWNLOAD AND BUILD THE IMAGE-AGGREGATOR-WS
 RUN git clone https://github.com/big-data-europe/pilot-sc7-image-aggregator.git && \
 	cd pilot-sc7-image-aggregator && \
-	git checkout 7a6119d1cde76b1641d15cfaf364b26eb15658d4 && \
+	git checkout 5ecf9155288402b45bbcb4951c7a814256e859a1 && \
 	mvn package
 
 RUN mkdir /images && \
