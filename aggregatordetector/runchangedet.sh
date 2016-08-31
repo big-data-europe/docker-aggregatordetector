@@ -13,7 +13,7 @@ echo "Passing arguments ${SPARK_APPLICATION_IMG1} ${SPARK_APPLICATION_IMG2}"
 
 /spark/bin/spark-submit \
     --master ${SPARK_MASTER_URL} \
-    --executor-memory 10g \
-    --driver-memory 10g \
+    --executor-memory 16g \
+    --driver-memory 16g \
     --class ${SPARK_APPLICATION_MAIN_CLASS} \
     ${SPARK_APPLICATION_JAR_LOCATION} ${SPARK_APP_ARG_HDFS} ${SPARK_APPLICATION_IMG1} ${SPARK_APPLICATION_IMG2} ${SPARK_APP_ARG_LOCAL}
