@@ -60,7 +60,7 @@ RUN wget -q https://archive.apache.org/dist/tomcat/tomcat-${TOMCAT_MAJOR_VERSION
 # DOWNLOAD AND BUILD THE IMAGE-AGGREGATOR-WS
 RUN git clone https://github.com/big-data-europe/pilot-sc7-image-aggregator.git && \
 	cd pilot-sc7-image-aggregator && \
-	git checkout 89b252256a0a086cfb00521e4361fdbd06de1f0d && \
+	git checkout 41e40ad823a7a699374c406ee3e1a278f8e479ff && \
 	mvn package
 
 RUN mkdir /images && \
