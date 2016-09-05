@@ -58,9 +58,9 @@ RUN wget -q https://archive.apache.org/dist/tomcat/tomcat-${TOMCAT_MAJOR_VERSION
     mv apache-tomcat* tomcat
 
 # DOWNLOAD AND BUILD THE IMAGE-AGGREGATOR-WS
-RUN git clone https://github.com/big-data-europe/pilot-sc7-image-aggregator.git && \
+RUN git clone -b master_manos https://github.com/big-data-europe/pilot-sc7-image-aggregator.git && \
 	cd pilot-sc7-image-aggregator && \
-	git checkout 41e40ad823a7a699374c406ee3e1a278f8e479ff && \
+	git checkout 9890c8fdec03edb84c82dfd51ff0991fce111225 && \
 	mvn package
 
 RUN mkdir /images && \
@@ -71,6 +71,7 @@ ADD create_tomcat_admin_user.sh /create_tomcat_admin_user.sh
 ADD imgagg.sh /imgagg.sh
 ADD runchangedet.sh /runchangedet.sh
 ADD id.txt /resources
+ADD coords.txt /resources
 RUN chmod +x /*.sh
 
 EXPOSE $PORT
