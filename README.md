@@ -5,9 +5,9 @@ Aggregatordetector is a software component combining two functionalities. A web-
 Example Usage
 
 Run the docker:
-$ docker run -p 9999:8080 gioargyr/aggregatordetector:2.0.1
+$ docker run -p 9999:8080 bde2020/aggregatordetector:2.0.1
 
-Trigger it through browser:
+Test it through browser:
 http://localhost:9999/changeDetection/changes/progress?extent=POLYGON%28%2835.312207138944146+25.300386450309578%2C35.312207138944146+19.257905982399958%2C41.09114708620481+19.257905982399958%2C41.09114708620481+25.300386450309578%2C35.312207138944146+25.300386450309578%29%29&reference_date=2016-03-10T10%3A57%3A53%2B0000&event_date=2016-03-16T10%3A57%3A53%2B0000&polarisations=%5BVH%2C+VV%5D&username=efaki&password=testapp
 
 The spark-app will be submitted at:

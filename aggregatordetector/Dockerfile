@@ -1,10 +1,10 @@
 #####################################
 # Dockerfile for AggregatorDetector #
-# BigDataEurope		            #
-#			            #
-# java 1.8.0_11		            #
-# maven 3.0.5		            #
-# git 1.9.1		            #
+# BigDataEurope		                #
+#			                        #
+# java 1.8.0_11		                #
+# maven 3.0.5		                #
+# git 1.9.1		                    #
 # tomcat 8.0.23                     #
 # spark 1.6.2                       #
 #####################################
