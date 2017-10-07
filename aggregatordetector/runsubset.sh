@@ -11,6 +11,6 @@ echo "args[0] = ${IMG_DIR}"
 echo "args[1] = ${IMG_NAME}"
 echo "args[2] = ${POLYGON}"
 echo "Computing subset..."
-printf "\n"
 
 java -Xmx12g -jar ${APP} ${IMG_DIR} ${IMG_NAME} ${POLYGON}
+echo "...image ${IMG_NAME} has been subseted."

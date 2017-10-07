@@ -16,7 +16,6 @@ echo "args[0] = ${ARG_LOCAL_FILEPATH}"
 echo "args[1] = ${ARG_INPUT}"
 echo "args[2] = ${ARG_OUTPUT}"
 echo "Running DBScan..."
-printf "\n"
 
 /spark/bin/spark-submit \
     --master ${SPARK_MASTER_URL} \
@@ -25,4 +24,4 @@ printf "\n"
     --class ${SPARK_APP_MAIN_CLASS} \
     ${SPARK_APP} ${ARG_LOCAL_FILEPATH} ${ARG_INPUT} ${ARG_OUTPUT} 2> /dbscanlogs/errorOutput.log > /dbscanlogs/output.log
 
-
+echo "...DBScan completed."

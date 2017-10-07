@@ -25,6 +25,7 @@ RUN apt-get update \
     curl \
     maven \
     git \
+    vim \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
@@ -109,7 +110,6 @@ RUN cp /pilot-sc7-image-aggregator/target/*.war /tomcat/webapps \
  && rm -rf pilot-sc7-image-aggregator
 
 
-ADD create_tomcat_admin_user.sh /create_tomcat_admin_user.sh
 ADD aggregatordetector.sh /aggregatordetector.sh
 ADD runsubset.sh /runsubset.sh
 ADD runchangedet.sh /runchangedet.sh
