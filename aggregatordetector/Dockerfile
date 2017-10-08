@@ -16,12 +16,10 @@ ENV PORT 8080
 ENV TOMCAT_MAJOR_VERSION 8
 ENV TOMCAT_MINOR_VERSION 8.0.23
 
-# WGET INSTALLATION
-RUN apt-get update && apt-get install -y wget && apt-get clean
-
 # INSTALL PREREQUISITIES
 RUN apt-get update \
  && apt-get install -y \
+    wget \
     curl \
     maven \
     git \
@@ -29,29 +27,13 @@ RUN apt-get update \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
-
-### JAVA-INSTALLATION
-
-# INSTALLATION JAVA SHELL VARIABLES
-ENV java_version 1.8.0_11
-ENV filename jdk-8u11-linux-x64.tar.gz
-ENV downloadlink http://download.oracle.com/otn-pub/java/jdk/8u11-b12/$filename
-
-# DOWNLOAD JAVA AND ACCEPT LICENSE AGGREMENT
-RUN wget --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" -O /tmp/$filename $downloadlink 
-
-# UNPACK JAVA
-RUN mkdir /opt/java-oracle && tar -zxf /tmp/$filename -C /opt/java-oracle/
-
-# CONFIGURE JAVA ENV VARIABLE
-ENV JAVA_HOME /opt/java-oracle/jdk$java_version
-ENV PATH $JAVA_HOME/bin:$PATH
-
-# CONFIGURE SYMBOLIC LINKS FOR THE JAVA AND JAVAC EXECUTABLES
-RUN update-alternatives --install /usr/bin/java java $JAVA_HOME/bin/java 20000 && update-alternatives --install /usr/bin/javac javac $JAVA_HOME/bin/javac 20000
-
-### END OF JAVA-INSTALLATION
-
+# (NEW) JAVA8-INSTALLATION
+RUN apt-get update \
+ && apt-get install -y software-properties-common \
+ && add-apt-repository -y ppa:webupd8team/java \
+ && apt update \
+ && echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections
+ && apt install -y oracle-java8-installer
 
 # INSTALL SPARK
 RUN apt-get update \
