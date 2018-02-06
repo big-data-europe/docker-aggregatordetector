@@ -1,47 +1,50 @@
 #####################################
 # Dockerfile for AggregatorDetector #
-# BigDataEurope		                #
-#			                        #
+# BigDataEurope                     #
+#                                   #
 #####################################
 
 FROM gioargyr/adbase:1.0.0
 
 MAINTAINER Giorgos Argyriou <gioargyr@gmail.com>
 
-# DOWNLOAD AND BUILD subsetOperator
-RUN git clone -b subsetOperator https://github.com/big-data-europe/pilot-sc7-change-detector.git \
- && cd pilot-sc7-change-detector \
+# DOWNLOAD AND BUILD pre-processing stage (read-subset-calibrate-write)
+RUN git clone https://github.com/gioargyr/pilot-sc7-imgpreprocessor.git \
+ && cd /pilot-sc7-imgpreprocessor/pilot-sc7-imgpreprocessor \
  && mvn clean package
 
-RUN mkdir /javasparkapps \
- && mkdir /snap \
- && mv /pilot-sc7-change-detector/target/spark.test-0.0.1-SNAPSHOT-allinone.jar /javasparkapps/subset.jar \
- && rm -rf /pilot-sc7-change-detector
+RUN mkdir /allApps \
+ && mkdir /allImages \
+ && mv /pilot-sc7-imgpreprocessor/pilot-sc7-imgpreprocessor/target/pilot-sc7-imgpreprocessor-0.0.1-SNAPSHOT-allinone.jar /allApps/preprocessing.jar \
+ && rm -rf /pilot-sc7-imgpreprocessor
 
 
-# DOWNLOAD AND BUILD spark-ChangeDetector
-RUN git clone -b subsetIntegration https://github.com/big-data-europe/pilot-sc7-change-detector.git \
- && cd pilot-sc7-change-detector \
- && mvn clean package
+# DOWNLOAD AND BUILD C++ TerrainCorrection code
+RUN git clone https://github.com/ArArgyridis/RangeDopplerTerrainCorrection.git /RangeDopplerTerrainCorrection \
+ && cd /RangeDopplerTerrainCorrection \
+ && sed -i '/cmake/c\cmake -DCMAKE_C_COMPILER=/usr/bin/gcc-7 -DCMAKE_CXX_COMPILER=/usr/bin/g++-7 ../' build.sh \
+ && chmod +x build.sh \
+ && ./build.sh
 
-RUN mkdir /cdlogs \
- && mv /pilot-sc7-change-detector/target/changedetector-0.0.1-SNAPSHOT-allinone.jar /javasparkapps/sparkchangedet.jar \
- && rm -rf /pilot-sc7-change-detector
+RUN mv /RangeDopplerTerrainCorrection/bin/RangeDopplerTerrainCorrection /allapps
 
 
-# DOWNLOAD AND BUILD spark-DBScan
-RUN cd /cdlogs \
- && git clone -b DBScan https://github.com/big-data-europe/pilot-sc7-change-detector.git \
- && cd pilot-sc7-change-detector \
- && mvn clean package
+# DOWNLOAD AND BUILD C++ ChangeDetection code
+RUN git clone https://github.com/ArArgyridis/LogRatioChangeDetection.git /LogRatioChangeDetection \
+ && cd /LogRatioChangeDetection \
+ && sed -i '/cmake/c\cmake -DCMAKE_C_COMPILER=/usr/bin/gcc-7 -DCMAKE_CXX_COMPILER=/usr/bin/g++-7 ../' build.sh \
+ && chmod +x build.sh \
+ && ./build.sh
 
-RUN mkdir /dbscanlogs \
- && mv /cdlogs/pilot-sc7-change-detector/target/spark.test-0.0.1-SNAPSHOT-allinone.jar /javasparkapps/sparkdbscan.jar \
- && rm -rf /cdlogs/pilot-sc7-change-detector
+RUN mv /LogRatioChangeDetection/bin/LogRatioChangeDetection /allapps
+
+
+# DOWNLOAD PyDBScan
+RUN https://github.com/gioargyr/PyDBScan.git
 
 
 # DOWNLOAD AND BUILD image-aggregator service
-RUN git clone -b cdflow https://github.com/big-data-europe/pilot-sc7-image-aggregator.git \
+RUN git clone -b cycle3 https://github.com/big-data-europe/pilot-sc7-image-aggregator.git \
  && cd pilot-sc7-image-aggregator \
  && mvn clean package
 
@@ -49,10 +52,12 @@ RUN cp /pilot-sc7-image-aggregator/target/*.war /tomcat/webapps \
  && rm -rf pilot-sc7-image-aggregator
 
 
-ADD aggregatordetector.sh /aggregatordetector.sh
-ADD runsubset.sh /runsubset.sh
-ADD runchangedet.sh /runchangedet.sh
-ADD rundbscan.sh /rundbscan.sh
+ADD runImgPreProcess.sh /runImgPreProcess.sh
+ADD downlDem.sh /downlDem.sh
+ADD runTerrainCorrection.sh /runTerrainCorrection.sh
+ADD runChangeDetection.sh /runChangeDetection.sh
+ADD runPyDBScan.sh /runPyDBScan.sh
+
 
 RUN chmod +x /*.sh
 

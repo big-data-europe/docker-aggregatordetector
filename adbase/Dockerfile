@@ -24,6 +24,18 @@ RUN apt-get update \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
+## INSTALLATION OF PYTHON-RELATED PREREQS
+RUN add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable \
+ && apt update \
+ && apt install -y gdal-bin python-gdal python3-gdal
+
+# elevation python module for downloading dems
+RUN apt install -y python3-pip \
+ && pip install --upgrade pip \
+ && pip install elevation \
+ && pip3 install --upgrade pip \
+ && pip3 install shapely
+
 
 # JAVA8-INSTALLATION
 RUN apt-get update \
@@ -40,11 +52,6 @@ RUN wget -q https://archive.apache.org/dist/tomcat/tomcat-${TOMCAT_MAJOR_VERSION
  && tar zxf apache-tomcat-*.tar.gz \
  && rm apache-tomcat-*.tar.gz \
  && mv apache-tomcat* tomcat
-
-
-## INSTALLATION OF PROCESSING/DOWNLOADING executables
-# elevation python module for downloading dems
-RUN pip install elevation
 
 
 # INSTALL SPARK
