@@ -4,7 +4,7 @@
 #                                   #
 #####################################
 
-FROM gioargyr/adbase:1.0.0
+FROM gioargyr/adbase:1.0.1
 
 MAINTAINER Giorgos Argyriou <gioargyr@gmail.com>
 
@@ -26,7 +26,7 @@ RUN git clone https://github.com/ArArgyridis/RangeDopplerTerrainCorrection.git /
  && chmod +x build.sh \
  && ./build.sh
 
-RUN mv /RangeDopplerTerrainCorrection/bin/RangeDopplerTerrainCorrection /allapps
+RUN mv /RangeDopplerTerrainCorrection/bin/RangeDopplerTerrainCorrection /allApps
 
 
 # DOWNLOAD AND BUILD C++ ChangeDetection code
@@ -36,11 +36,11 @@ RUN git clone https://github.com/ArArgyridis/LogRatioChangeDetection.git /LogRat
  && chmod +x build.sh \
  && ./build.sh
 
-RUN mv /LogRatioChangeDetection/bin/LogRatioChangeDetection /allapps
+RUN mv /LogRatioChangeDetection/bin/LogRatioChangeDetection /allApps
 
 
 # DOWNLOAD PyDBScan
-RUN https://github.com/gioargyr/PyDBScan.git
+RUN git clone https://github.com/gioargyr/PyDBScan.git
 
 
 # DOWNLOAD AND BUILD image-aggregator service
@@ -52,8 +52,8 @@ RUN cp /pilot-sc7-image-aggregator/target/*.war /tomcat/webapps \
  && rm -rf pilot-sc7-image-aggregator
 
 
-ADD runImgPreProcess.sh /runImgPreProcess.sh
 ADD downlDem.sh /downlDem.sh
+ADD runImgPreProcess.sh /runImgPreProcess.sh
 ADD runTerrainCorrection.sh /runTerrainCorrection.sh
 ADD runChangeDetection.sh /runChangeDetection.sh
 ADD runPyDBScan.sh /runPyDBScan.sh
